@@ -1,16 +1,26 @@
 package com.app.springmvc.service;
 
+import com.app.springmvc.dao.UserProfileDAO;
 import java.util.List;
 
 import com.app.springmvc.model.UserProfile;
+import org.springframework.beans.factory.annotation.Autowired;
 
+@org.springframework.stereotype.Service("userProfileService")
+public class UserProfileService extends Service<UserProfile, Integer>{
 
-public interface UserProfileService {
+    @Autowired
+    UserProfileDAO dao;
 
-	UserProfile findById(int id);
+    public UserProfile findById(Integer id) {
+        return (UserProfile) dao.findById(id);
+    }
 
-	UserProfile findByType(String type);
-	
-	List<UserProfile> findAll();
-	
+    public UserProfile findByType(String type) {
+        return dao.findByType(type);
+    }
+
+    public List<UserProfile> findAll() {
+        return dao.findAll();
+    }
 }
