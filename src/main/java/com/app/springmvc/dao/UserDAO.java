@@ -74,4 +74,6 @@ public class UserDAO extends AbstractDAO<User, Integer> {
         collection.iterator().hasNext();
     }
 
+
+
 }
