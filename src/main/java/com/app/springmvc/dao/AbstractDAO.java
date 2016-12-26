@@ -5,10 +5,15 @@ import java.lang.reflect.ParameterizedType;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import org.springframework.data.jpa.repository.support.JpaEntityInformation;
+import org.springframework.data.jpa.repository.support.JpaEntityInformationSupport;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 
 public  class AbstractDAO<T, ID extends Serializable> extends SimpleJpaRepository{
 	
+    	@PersistenceContext
+	EntityManager entityManager;
+        
 	private final Class<T> persistentClass;
 	
 ////	@SuppressWarnings("unchecked")
@@ -19,13 +24,12 @@ public  class AbstractDAO<T, ID extends Serializable> extends SimpleJpaRepositor
 //	}
         
         @SuppressWarnings("unchecked")
-	public AbstractDAO(Class<T> domainClass, EntityManager em){
-            super(domainClass, em);
+	public AbstractDAO(Class<T> domainClass, EntityManager em) {
+            super(JpaEntityInformationSupport.getEntityInformation(domainClass, em), em);
             this.persistentClass =(Class<T>) ((ParameterizedType) this.getClass().getGenericSuperclass()).getActualTypeArguments()[1];
 	}
 	
-	@PersistenceContext
-	EntityManager entityManager;
+
 	
 	public EntityManager getEntityManager(){
 		return this.entityManager;

@@ -9,14 +9,15 @@ import org.springframework.stereotype.Repository;
 import com.app.springmvc.model.UserProfile;
 import javax.persistence.EntityManager;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 @Repository("userProfileDao")
-public class UserProfileDAO extends AbstractDAO<UserProfile,Integer> {
+@Transactional
+public class UserProfileDAO extends AbstractDAO<UserProfile, Integer> {
 
     @Autowired
     public UserProfileDAO(EntityManager em) {
         super(UserProfile.class, em);
-        
     }
 
 //	public UserProfile findById(int id) {

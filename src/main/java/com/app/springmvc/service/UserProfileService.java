@@ -10,7 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class UserProfileService extends Service<UserProfile, Integer>{
 
     @Autowired
-    UserProfileDAO dao;
+    UserProfileDAO dao;  
+    
 
     public UserProfile findById(Integer id) {
         return (UserProfile) dao.findById(id);

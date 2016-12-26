@@ -10,8 +10,10 @@ import org.springframework.stereotype.Repository;
 import com.app.springmvc.model.User;
 import javax.persistence.EntityManager;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 @Repository("userDao")
+@Transactional
 public class UserDAO extends AbstractDAO<User, Integer> {
 
     @Autowired

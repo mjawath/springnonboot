@@ -18,51 +18,54 @@ import org.springframework.web.servlet.view.JstlView;
 
 import com.app.springmvc.converter.RoleToUserProfileConverter;
 
-
 @Configuration
 @Import(JpaConfiguration.class)
 @EnableWebMvc
 @ComponentScan(basePackages = "com.app.springmvc")
-public class AppConfig extends WebMvcConfigurerAdapter{
-	
-	
-	@Autowired
-	RoleToUserProfileConverter roleToUserProfileConverter;
-	
+public class AppConfig extends WebMvcConfigurerAdapter {
 
-	/**
+    public AppConfig() {
+        System.out.println("confing             ++++++++++++++++++++++++++++++++++AppConfig");
+    }
+
+//    @Autowired
+//    RoleToUserProfileConverter roleToUserProfileConverter;
+
+    /**
      * Configure ViewResolvers to deliver preferred views.
      */
-	@Override
-	public void configureViewResolvers(ViewResolverRegistry registry) {
+    @Override
+    public void configureViewResolvers(ViewResolverRegistry registry) {
 
-		InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
-		viewResolver.setViewClass(JstlView.class);
-		viewResolver.setPrefix("/WEB-INF/views/");
-		viewResolver.setSuffix(".jsp");
-		registry.viewResolver(viewResolver);
-	}
-	
-	/**
-     * Configure ResourceHandlers to serve static resources like CSS/ Javascript etc...
+        InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
+        viewResolver.setViewClass(JstlView.class);
+        viewResolver.setPrefix("/WEB-INF/views/");
+        viewResolver.setSuffix(".jsp");
+        registry.viewResolver(viewResolver);
+        System.out.println("configureViewResolvers");
+    }
+
+    /**
+     * Configure ResourceHandlers to serve static resources like CSS/ Javascript
+     * etc...
      */
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/static/**").addResourceLocations("/static/");
     }
-    
+
     /**
-     * Configure Converter to be used.
-     * In our example, we need a converter to convert string values[Roles] to UserProfiles in newUser.jsp
+     * Configure Converter to be used. In our example, we need a converter to
+     * convert string values[Roles] to UserProfiles in newUser.jsp
      */
     @Override
     public void addFormatters(FormatterRegistry registry) {
-        registry.addConverter(roleToUserProfileConverter);
+//        registry.addConverter(roleToUserProfileConverter);
     }
-	
 
     /**
-     * Configure MessageSource to lookup any validation/error message in internationalized property files
+     * Configure MessageSource to lookup any validation/error message in
+     * internationalized property files
      */
     @Bean
     public MessageSource messageSource() {
@@ -70,16 +73,16 @@ public class AppConfig extends WebMvcConfigurerAdapter{
         messageSource.setBasename("messages");
         return messageSource;
     }
-    
-    /**Optional. It's only required when handling '.' in @PathVariables which otherwise ignore everything after last '.' in @PathVaidables argument.
-     * It's a known bug in Spring [https://jira.spring.io/browse/SPR-6164], still present in Spring 4.3.0.
-     * This is a workaround for this issue.
+
+    /**
+     * Optional. It's only required when handling '.' in @PathVariables which
+     * otherwise ignore everything after last '.' in @PathVaidables argument.
+     * It's a known bug in Spring [https://jira.spring.io/browse/SPR-6164],
+     * still present in Spring 4.3.0. This is a workaround for this issue.
      */
-    
     @Override
     public void configurePathMatch(PathMatchConfigurer matcher) {
         matcher.setUseRegisteredSuffixPatternMatch(true);
     }
-    
-}
 
+}
