@@ -5,8 +5,10 @@ import java.util.List;
 
 import com.app.springmvc.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 @org.springframework.stereotype.Service
+@Transactional
 public class UserService  extends Service<User, Integer>{
 
     @Autowired

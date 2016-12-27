@@ -1,19 +1,20 @@
 package com.app.springmvc.dao;
 
-import com.app.springmvc.model.User;
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import org.springframework.data.jpa.repository.support.JpaEntityInformation;
-import org.springframework.data.jpa.repository.support.JpaEntityInformationSupport;
-import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
+//import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
+
 
 public class AbstractDAO<T, ID extends Serializable> {
 
     @PersistenceContext
     EntityManager entityManager;
+
+//        protected SimpleJpaRepository<T,ID> proxyRepo;//SimpleJpaRepository will act as default actual repository handler  proxy
+
 
     private final Class<T> persistentClass;
 
@@ -24,9 +25,9 @@ public class AbstractDAO<T, ID extends Serializable> {
 //                
 //	}
     @SuppressWarnings("unchecked")
-    public AbstractDAO(Class<T> domainClass, EntityManager em) {
+    public AbstractDAO(Class<T> domainClass) {
         super();
-        this.persistentClass = (Class<T>) ((ParameterizedType) this.getClass().getGenericSuperclass()).getActualTypeArguments()[1];
+        this.persistentClass = (Class<T>) ((ParameterizedType) this.getClass().getGenericSuperclass()).getActualTypeArguments()[0];
     }
 
     public EntityManager getEntityManager() {
@@ -41,13 +42,14 @@ public class AbstractDAO<T, ID extends Serializable> {
         return null;
     }
 
-    public void save(User user) {
- 
+    public void save(T obj) {
+        entityManager.persist(obj);
     }
     
-    public void delete(T user) {
-        
+    public void delete(T obj) {
+        entityManager.remove(obj);
     }
+    
 
     public T getByKey(ID key) {
         return (T) entityManager.find(persistentClass, key);

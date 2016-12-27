@@ -5,8 +5,10 @@ import java.util.List;
 
 import com.app.springmvc.model.UserProfile;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 @org.springframework.stereotype.Service("userProfileService")
+@Transactional
 public class UserProfileService extends Service<UserProfile, Integer>{
 
     @Autowired
