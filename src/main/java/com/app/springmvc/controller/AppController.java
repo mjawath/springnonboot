@@ -39,6 +39,7 @@ public class AppController {
 	@Autowired
 	MessageSource messageSource;
 
+        String myx ="sfsdf";
 	/**
 	 * This method will list all existing users.
 	 */
@@ -47,8 +48,14 @@ public class AppController {
 
 		List<User> users = userService.findAllUsers();
 		model.addAttribute("users", users);
+                System.out.println("===========4444444444444444444444444==============="+myx);
+                int x=25;
+                show();
 		return "userslist";
 	}
+        public void show(){
+            System.out.println("some thing method is called");
+        }
 
 	/**
 	 * This method will provide the medium to add a new user.

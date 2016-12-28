@@ -2,18 +2,20 @@ package com.app.springmvc.dao;
 
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
+import javax.annotation.PostConstruct;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 //import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 
 
 public class AbstractDAO<T, ID extends Serializable> {
 
     @PersistenceContext
-    EntityManager entityManager;
+    protected EntityManager entityManager;
 
-//        protected SimpleJpaRepository<T,ID> proxyRepo;//SimpleJpaRepository will act as default actual repository handler  proxy
+     protected SimpleJpaRepository<T,ID> proxyRepo;//SimpleJpaRepository will act as default actual repository handler  proxy
 
 
     private final Class<T> persistentClass;
@@ -27,7 +29,7 @@ public class AbstractDAO<T, ID extends Serializable> {
     @SuppressWarnings("unchecked")
     public AbstractDAO(Class<T> domainClass) {
         super();
-        this.persistentClass = (Class<T>) ((ParameterizedType) this.getClass().getGenericSuperclass()).getActualTypeArguments()[0];
+        this.persistentClass = domainClass;//(Class<T>) ((ParameterizedType) this.getClass().getGenericSuperclass()).getActualTypeArguments()[0];
     }
 
     public EntityManager getEntityManager() {
@@ -68,4 +70,21 @@ public class AbstractDAO<T, ID extends Serializable> {
 //	public void delete(T entity) {
 //		entityManager.remove(entity);
 //	}
+    @PostConstruct
+    public void post(){
+        System.out.println("---------------");
+        System.out.println("init  after post ss "+proxyRepo==null);
+        if(entityManager==null){
+            System.out.println("ooooooooops entitiyme amnger is null");
+            return;
+        }
+        if(persistentClass==null){
+            System.out.println("ooooooooops persistance is null++++");
+            return;
+        }
+        proxyRepo = new SimpleJpaRepository<>(persistentClass,entityManager);
+        if(proxyRepo==null){
+            System.out.println("*******************proxy is nulll");
+        }
+    }
 }
